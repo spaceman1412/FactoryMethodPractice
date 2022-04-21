@@ -11,10 +11,18 @@ namespace FactoryMethod
         static void Main(string[] args)
         {
             ClosetDeadline deadline = new ClosetDeadline();
-            Console.WriteLine(deadline.FactoryMethod().getCourseName());
+            List<Deadline> list = deadline.GetDeadlines();
+            foreach (Deadline deadline1 in list)
+            {
+                Console.WriteLine(deadline1.getDeadlineDay());
+            }
 
             DeadlineCourse deadlineCourse = new DeadlineCourse("OOSE");
-            Console.WriteLine(deadlineCourse.FactoryMethod().getCourseName());
+            list = deadlineCourse.GetDeadlines();
+            foreach (Deadline deadline1 in list)
+            {
+                Console.WriteLine(deadline1.getDeadlineDay());
+            }
         }
     }
 }

@@ -2,30 +2,16 @@ using System;
 
 namespace FactoryMethod
 {
-    // The Creator class declares the factory method that is supposed to return
-    // an object of a Product class. The Creator's subclasses usually provide
-    // the implementation of this method.
 
-    abstract class Creator
+    public interface DeadlineFactory
     {
-        public abstract Deadline FactoryMethod();
-
-        public Deadline GetDeadline()
-        {
-            ClosetDeadline closetDeadline = new ClosetDeadline();
-            Deadline closet = closetDeadline.FactoryMethod();
-            return closet;
-        }
-
-        public Deadline GetDeadlineCourse()
-        {
-            return null;
-        }
+        public List<Deadline> GetDeadlines();
     }
 
-    class ClosetDeadline : Creator
+
+    class ClosetDeadline : DeadlineFactory
     {
-        public override Deadline FactoryMethod()
+        public List<Deadline> GetDeadlines()
         {
             OOSE OOSE = new OOSE();
             DesignPattern designPattern = new DesignPattern();
@@ -35,6 +21,10 @@ namespace FactoryMethod
             Deadline deadlineCloset = deadlines[0];
             DateTime closet = ConvertStringToDatetime(deadlineCloset.getDeadlineDay());
 
+            List<Deadline> closets = new List<Deadline>();
+
+
+            //Get closet deadline
             foreach (Deadline deadline in deadlines)
             {
                 DateTime dateTime = ConvertStringToDatetime(deadline.getDeadlineDay());
@@ -45,8 +35,21 @@ namespace FactoryMethod
                     deadlineCloset = deadline;
                 }
             }
-            return deadlineCloset;
+
+
+            //Get deadline equal with closet
+            foreach (Deadline deadline in deadlines)
+            {
+                DateTime dateTime = ConvertStringToDatetime(deadline.getDeadlineDay());
+                int result = DateTime.Compare(dateTime, closet);
+                if (result == 0)
+                {
+                    closets.Add(deadline);
+                }
+            }
+            return closets;
         }
+
 
         public DateTime ConvertStringToDatetime(String dateTime)
         {
@@ -55,14 +58,15 @@ namespace FactoryMethod
     }
 
 
-    class DeadlineCourse : Creator
+
+    class DeadlineCourse : DeadlineFactory
     {
         string courseName;
         public DeadlineCourse(string CourseName)
         {
             this.courseName = CourseName;
         }
-        public override Deadline FactoryMethod()
+        public List<Deadline> GetDeadlines()
         {
             Course course = new DesignPattern();
             switch (courseName)
@@ -78,7 +82,7 @@ namespace FactoryMethod
             }
 
             List<Deadline> deadlines = course.deadlines();
-            return deadlines[0];
+            return deadlines;
         }
     }
 }
